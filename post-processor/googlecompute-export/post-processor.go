@@ -102,6 +102,11 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 			errs, fmt.Errorf("paths must be specified"))
 	}
 
+	if p.config.OmitExternalIP && !p.config.UseInternalIP {
+		errs = packersdk.MultiErrorAppend(
+			errs, fmt.Errorf("'use_internal_ip' must be true if 'omit_external_ip' is true"))
+	}
+
 	// Set defaults.
 	if p.config.DiskSizeGb == 0 {
 		p.config.DiskSizeGb = 200
